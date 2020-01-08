@@ -40,9 +40,17 @@
       };
 
       $(function () {
+        var rate = 70;
         $('#input').on('input', function () {
-          $('#output').val(spinderman($(this).val(), 70));
+          $('#output').val(spinderman($(this).val(), rate));
         }).trigger('input');
+
+        $('#spinderman-rate').on('click', function (e) {
+          var parentOffset = $(this).parent().offset();
+          rate = Math.floor((e.pageX - parentOffset.left) / ($(this).parent().width() / 100));
+          $('#spinderman-rate-bar').css('width', rate + '%').text(rate + '%');
+          $('#input').trigger('input');
+        });
       });
     </script>
 </head>
@@ -59,6 +67,17 @@
                     <li>предсмъртно писмо</li>
                     <li>покана за секс</li>
                 </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p>Колко голем спиндър си?</p>
+                <div class="progress" id="spinderman-rate" style="cursor: pointer">
+                    <div id="spinderman-rate-bar" class="progress-bar" role="progressbar" style="width: 70%;"
+                         aria-valuenow="25"
+                         aria-valuemin="0" aria-valuemax="100">70%
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">

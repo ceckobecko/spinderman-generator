@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spinderman Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script>
+      var spinderman = function (string, rate) {
+        var spindyExtender = {
+          'а': ['еа', 'ae', 'ъа', 'я', 'ъ', 'а'],
+          'ъ': ['аъ', 'а', 'ъе', 'йъ'],
+          'е': ['еа', 'ае', 'еъ'],
+          'у': ['уе', 'еу', 'ау'],
+          'ш': ['ш', 'т', 'щ', 'шъ', 'ъш', 'ж', 'жъ', 'ъж'],
+          'в': ['ф', 'в', 'въ', 'ъв'],
+          'щ': ['шт', 'щъ', 'тш'],
+          'я': ['йа', 'ай', 'иа'],
+          'т': ['д', ['тъ']],
+          'ю': ['йу', 'юу', 'зу'],
+          'з': ['з'],
+          'к': ['г', 'к', 'гк', 'къ'],
+          'д': ['т', 'дъ', 'ъд'],
+          'б': ['бъ', 'пъ', 'п']
+        };
+
+        var output = '';
+        for (var i = 0; i < string.length; i++) {
+          var chance = Math.floor(Math.random() * 100);
+          var original = string.charAt(i);
+          var spindy = original;
+          if (spindyExtender[original]) {
+            spindy = spindyExtender[original][Math.floor(Math.random() * spindyExtender[original].length)];
+          }
+          output += chance < rate ? spindy : original;
+        }
+        return output;
+      };
+
+      $(function () {
+        $('#input').on('input, change', function () {
+          $('#output').val(spinderman($(this).val(), 70));
+        }).trigger('change');
+      });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="offset-sm-2 col-sm-8 text-center">
+        <h1 style="margin-top: 2em;">Спинти Генерато!р</h1>
+        <div class="card">
+            <div class="card-body text-left">
+                <h3>Идеи - копирай и пейстни у полето</h3>
+                <ul>
+                    <li>Текст на песен</li>
+                    <li>Любовно обяснение</li>
+                    <li>предсмъртно писмо</li>
+                    <li>покана за секс</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="input">входъ</label>
+                <textarea style="height: 300px" type="email" id="input" class="form-control"
+                          placeholder="фгъраи туг анпуД" required
+                          autofocus>
+Давам всичко за теб
+Да се върнеш пак при мен
+Сърцето ми бие за теб
+За нежното ти лице
+Давам всичко за теб
+Дори да чувствам само студ
+Душата си давам за теб
+Но в живота ти има друг
+За последен път
+Виждам утрото във твоите очи
+Вали
+Тъжен дъжд по запустелите улици
+Припомни ми, че обичала си ме някога
+Давам всичко за теб
+В празнотата на града
+Сърцето ми бие за теб
+Коленичил пред твой'та врата
+Давам всичко за теб
+За вълшебния ти глас
+Душата си давам за теб
+Но ти не вярваш във това
+За последен път
+Виждам утрото във твоите очи
+Вали
+Тъжен дъжд по запустелите улици
+Припомни ми, че обичала си ме някога
+За последен път…
+                </textarea>
+            </div>
+            <div class="col-sm-6">
+                <label for="output">исгходъ</label>
+                <textarea style="height: 300px" type="email" id="output" class="form-control"
+                          placeholder="хвърга яка" disabled></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

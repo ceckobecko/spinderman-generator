@@ -40,9 +40,9 @@
       };
 
       $(function () {
-        $('#input').on('input, change', function () {
+        $('#input').on('input', function () {
           $('#output').val(spinderman($(this).val(), 70));
-        }).trigger('change');
+        }).trigger('input');
       });
     </script>
 </head>

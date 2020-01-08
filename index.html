@@ -9,38 +9,82 @@
             crossorigin="anonymous"></script>
     <script>
       var spinderman = function (string, rate) {
-        var spindyExtender = {
-          'а': ['еа', 'ae', 'ъа', 'я', 'ъ', 'а'],
-          'ъ': ['аъ', 'а', 'ъе', 'йъ'],
-          'е': ['еа', 'ае', 'еъ'],
-          'у': ['уе', 'еу', 'ау'],
-          'ш': ['ш', 'т', 'щ', 'шъ', 'ъш', 'ж', 'жъ', 'ъж'],
-          'ж': ['ш', 'жъ', 'ъш'],
-          'в': ['ф', 'в', 'въ', 'ъв'],
-          'щ': ['шт', 'щъ', 'тш'],
-          'я': ['йа', 'ай', 'иа'],
-          'т': ['д', 'тъ'],
-          'ю': ['йу', 'юу', 'зу'],
-          'з': ['з', 'с', 'съ', 'за'],
-          'к': ['г', 'к', 'гк', 'къ'],
-          'д': ['т', 'дъ', 'ъд'],
-          'б': ['бъ', 'пъ', 'п'],
-          'й': ['и', 'ий']
-        };
+        function extender(string) {
+          var spindyExtender = {
+            'а': ['еа', 'ae', 'ъа', 'я', 'ъ', 'а'],
+            'ъ': ['аъ', 'а', 'ъе', 'йъ'],
+            'е': ['еа', 'ае', 'еъ'],
+            'у': ['уе', 'еу', 'ау', 'o'],
+            'ш': ['ш', 'т', 'щ', 'шъ', 'ъш', 'ж', 'жъ', 'ъж'],
+            'ж': ['ш', 'жъ', 'ъш'],
+            'в': ['ф', 'в', 'въ', 'ъв'],
+            'щ': ['шт', 'щъ', 'тш'],
+            'я': ['йа', 'ай', 'иа'],
+            'т': ['д', 'тъ'],
+            'ю': ['йу', 'юу', 'зу'],
+            'з': ['з', 'с', 'съ', 'за'],
+            'к': ['г', 'к', 'гк', 'къ'],
+            'д': ['т', 'дъ', 'ъд'],
+            'б': ['бъ', 'пъ', 'п'],
+            'й': ['и', 'ий']
+          };
 
-        var output = '';
-        for (var i = 0; i < string.length; i++) {
-          var chance = Math.floor(Math.random() * 100);
-          var original = string.charAt(i);
-          var spindy = original;
-          if (spindyExtender[original]) {
-            spindy = spindyExtender[original][Math.floor(Math.random() * spindyExtender[original].length)];
+          var output = '';
+          for (var i = 0; i < string.length; i++) {
+            var chance = Math.floor(Math.random() * 100);
+            var original = string.charAt(i);
+            var spindy = original;
+            if (spindyExtender[original]) {
+              spindy = spindyExtender[original][Math.floor(Math.random() * spindyExtender[original].length)];
+            }
+            output += chance < (rate / 4) ? spindy : original;
           }
-          output += chance < rate ? spindy : original;
+          return output;
         }
-        return output;
-      };
 
+        function swapper(string) {
+          var output = '';
+          for (var i = 0; i < string.length; i = i + 2) {
+            var chance = Math.floor(Math.random() * 100);
+            var original = string.charAt(i);
+            var nextOriginal = string.charAt(i + 1);
+            if (nextOriginal === '' || nextOriginal === ' ' || original === ' ') {
+              output += original + nextOriginal;
+              continue;
+            }
+            output += chance < (rate / 2) ? (nextOriginal + original) : (original + nextOriginal);
+          }
+          return output;
+        }
+
+        function gluer(string) {
+          var split = string.split(" ");
+          for (var i = 0; i < split.length; i++) {
+            var chance = Math.floor(Math.random() * 100);
+            var currentWord = split[i];
+            var nextWord = split[i + 1];
+            if (currentWord.length > 1) {
+              continue;
+            }
+            if (!nextWord || nextWord.length < 2) {
+              continue;
+            }
+            if (chance > rate) {
+              continue;
+            }
+            split[i] = '';
+            split[i + 1] = currentWord + nextWord;
+          }
+
+          return split.join(' ');
+        }
+
+        function spindy() {
+          return extender(swapper(gluer(string)));
+        }
+
+        return spindy();
+      };
       $(function () {
         var rate = 70;
         $('#input').on('input', function () {
